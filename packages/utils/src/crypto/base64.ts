@@ -1,5 +1,9 @@
-// 加密
-function base64EncodeUnicode(str) {
+/**
+ * base64 加密
+ * @param str
+ * @returns
+ */
+export function base64EncodeUnicode(str: string) {
   return btoa(
     encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
       return String.fromCharCode(Number("0x" + p1))
@@ -7,8 +11,12 @@ function base64EncodeUnicode(str) {
   )
 }
 
-// 解密
-function base64DecodeUnicode(str) {
+/**
+ * base64 解密
+ * @param str
+ * @returns
+ */
+export function base64DecodeUnicode(str: string) {
   return decodeURIComponent(
     atob(str)
       .split("")

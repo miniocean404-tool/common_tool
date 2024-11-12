@@ -1,3 +1,7 @@
+/**
+ * 检查是否支持 css 变量
+ * @returns void
+ */
 export const supportsCssVars = function () {
   document.documentElement.className = "js"
   let temp = document.createElement("style")
