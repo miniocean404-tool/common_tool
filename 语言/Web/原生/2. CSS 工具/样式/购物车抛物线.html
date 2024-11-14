@@ -1,0 +1,113 @@
+<html lang="en">
+
+<head>
+    <style>
+        :root {
+            /* 定义自定义属性--duration，设置为0.5s，代表动画持续0.5s */
+            --duration: .8s;
+        }
+
+        .menu-box {
+            margin-top: 100px;
+
+            .btn {
+                position: relative;
+            }
+
+            .menu {
+                margin-top: 500px;
+                width: 500px;
+                height: 100px;
+                border: 1px solid black;
+            }
+        }
+
+
+        /* 加号位置动态变，方便后面用js控制它的位置 */
+        .plus {
+            position: absolute;
+            left: var(--originX);
+            top: var(--originY);
+            animation: moveY var(--duration) cubic-bezier(0.5, -0.5, 1, 1);
+
+            .iconfont {
+                animation: moveX var(--duration) linear;
+            }
+        }
+
+        @keyframes moveX {
+            to {
+                transform: translateX(var(--targetX));
+            }
+        }
+
+        @keyframes moveY {
+            to {
+                transform: translateY(var(--targetY));
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            /**
+             * 1、实现一个点击按钮，在按钮位置生成一个加号。
+             * 2、通过动画效果将加号抛物线姿势飞向购物车，飞完后移除该加号。
+             * 3、动态设置--originX、--originY、--targetX和--targetY去控制加号的位置和移动路径。
+             */
+            const menu = document.querySelector(".menu");
+            const btn = document.querySelector(".btn");
+            const PLUS_SIZE = 30; // 加号的宽度
+
+            btn.onclick = () => {
+                const divY = document.createElement("div");
+                divY.addEventListener("animationend", () => divY.remove()) // 飞完后消失
+                divY.className = "plus";
+
+                const divX = document.createElement("div");
+                divX.className = 'iconfont';
+                divX.innerHTML = `+`
+                divY.appendChild(divX);
+
+                const btnRect = btn.getBoundingClientRect();
+
+                // 出发位置的 xy
+                const originX = btnRect.left + btnRect.width / 2 - PLUS_SIZE / 2
+                const originY = btnRect.top + btnRect.height / 2 - PLUS_SIZE / 2;
+
+                // 横向移动的距离是 加号的 left 加上它自身宽度的一半，减去购物车的 left 加上它自身宽度的一半。
+                const catRect = menu.getBoundingClientRect();
+                const targetX = (catRect.left + catRect.width / 2) - PLUS_SIZE / 2 - originX;
+                // 纵向移动的距离是 加号的top加上它自身高度的一半，减去购物车的top加上它自身高度的一半。
+                const targetY = (catRect.top + catRect.height / 2) - PLUS_SIZE / 2 - originY;
+
+
+                document.body.style.setProperty("--originX", `${originX}px`);
+                document.body.style.setProperty("--originY", `${originY}px`);
+                document.body.style.setProperty("--targetX", `${targetX}px`);
+                document.body.style.setProperty("--targetY", `${targetY}px`);
+
+                document.body.appendChild(divY);
+            }
+        })
+
+    </script>
+</head>
+
+<body>
+
+    <div class="menu-box">
+        <!-- 点击按钮 -->
+        <button class="btn">点击</button>
+
+        <!-- 购物车 -->
+        <div class="menu"></div>
+    </div>
+
+
+    <!-- 这个静态固定位置的（动态时需注释掉，需动态添加），下面动态js代码如下👇 -->
+    <!-- <div class="plus" style="--originX: 300px; --originY: 300px; --targetY: 400px;--targetX: 600px;">
+        <div class="iconfont">+</div>
+    </div> -->
+</body>
+
+</html>
