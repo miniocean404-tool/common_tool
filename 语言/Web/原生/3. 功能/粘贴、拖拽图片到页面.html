@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .area {
+            width: 600px;
+            height: 300px;
+            border: 1px dashed black;
+        }
+    </style>
+
+    <script>
+        window.onload = () => {
+            const area = document.querySelector('.area');
+
+            area.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'copy';
+                area.classList.add('draging');
+            });
+
+            area.addEventListener('drop', async function (e) {
+                e.preventDefault();
+                area.classList.remove('draging');
+                const files = e.dataTransfer.files;
+                const read = await readFile2Base64(files[0])
+                area.innerHTML = `<img src="${read.target.result}" alt=""/>`
+            });
+
+            area.addEventListener('dragleave', function (e) {
+                area.classList.remove('draging');
+            });
+
+            area.addEventListener("paste", async (e) => {
+                e.preventDefault()
+                // item.type: 标识种类是 string 还是 MIME File
+                for (const item of e.clipboardData.items) {
+                    if (item.kind === "file" && item.type.includes('image')) {
+                        const file = item.getAsFile();
+                        const read = await readFile2Base64(file)
+                        area.innerHTML = `<img src="${read.target.result}" alt=""/>`
+                        break
+                    }
+                }
+            })
+
+            function readFile2Base64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader()
+                    reader.onload = resolve
+                    reader.onerror = reject
+                    reader.readAsDataURL(file)
+                })
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="area"></div>
+</body>
+
+</html>
