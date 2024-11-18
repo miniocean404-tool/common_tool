@@ -44,6 +44,9 @@ function preLoadImages(images: string[], max = 3) {
 
     return new Promise((resolve, reject) => {
       const link = document.createElement("link")
+      // rel 中的参数：
+      // prefetch 优先级比较低，页面空闲时候才会加载,并且缓存到 http 请求中的 cache 中,下次还要发起请求，获取的是请求的缓存
+      // preload 优先级比较高, 存在内存里，非 http 缓存，下次用不会发起请求
       link.rel = "preload"
       // 表示链接元素要预加载的内容类型
       link.as = "image"
