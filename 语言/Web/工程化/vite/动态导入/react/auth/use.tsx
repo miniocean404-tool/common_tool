@@ -1,30 +1,36 @@
-import React from "react"
+import type { RegisterFormSchemaType } from "@/utils/schema/register"
+import React, { useContext, useState, type PropsWithChildren } from "react"
 
-const AuthContext = React.createContext<boolean | undefined>(false)
-// ! 无法全局使用，最好还是使用 redux
 // 可以用 context 存储 auth 状态来进行传递
-export function useAuth() {
-  const [authed, setAuthed] = useState<boolean>() //状态
+function useRegisterInfo() {
+  const [data, setData] = useState<RegisterFormSchemaType>({
+    email: "",
+    username: "",
+    password: "",
+  })
 
   return {
-    //认证状态
-    authed,
-    //登录
-    async login(username: string, password: string): Promise<void> {
-      setAuthed(true)
+    data,
+    async set(info: RegisterFormSchemaType): Promise<void> {
+      setData(info)
     },
-    //退出
-    logout() {
-      setAuthed(false)
+    clear() {
+      setData({
+        email: "",
+        username: "",
+        password: "",
+      })
     },
   }
 }
 
-export function AuthProvider({ children }) {
-  const auth = useAuth()
-  return <AuthContext.Provider value={auth.authed}>{children}</AuthContext.Provider>
+const RegisterInfoContext = React.createContext<ReturnType<typeof useRegisterInfo> | undefined>(undefined)
+
+export function RegisterInfoProvider({ children }: PropsWithChildren<any>) {
+  const register = useRegisterInfo()
+  return <RegisterInfoContext.Provider value={register} children={children} />
 }
 
-export default function AuthConsumer() {
-  return useContext(AuthContext)
+export function useRegisterInfoContext() {
+  return useContext(RegisterInfoContext)
 }
