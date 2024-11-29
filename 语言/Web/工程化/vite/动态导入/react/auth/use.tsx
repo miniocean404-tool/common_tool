@@ -26,6 +26,7 @@ function useRegisterInfo() {
 
 const RegisterInfoContext = React.createContext<ReturnType<typeof useRegisterInfo> | undefined>(undefined)
 
+// Context.Provider 下的所有消费组件，在 Provider.value 变化后，都会 re-render
 export function RegisterInfoProvider({ children }: PropsWithChildren<any>) {
   const register = useRegisterInfo()
   return <RegisterInfoContext.Provider value={register} children={children} />
