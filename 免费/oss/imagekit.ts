@@ -40,12 +40,7 @@ function generateFileHash(file: Buffer): string {
 
 async function checkIfFileExists(fileHash: string) {
   // 使用 ImageKit 的列表文件 API，根据文件哈希标签查找
-  const files = await imageKit.listFiles({
-    tags: fileHash,
-    limit: 1, // 只需要一个文件
-  })
-
-  return files.length > 0 ? files[0] : null
+  return await imageKit.getFileDetails(fileHash)
 }
 
 // 客户端 UI 直接传递需要的签名
@@ -60,3 +55,11 @@ export function generateUploadSignature(privateKey: string) {
 
   return { signature, expire, token }
 }
+
+// 获取文件列表
+// const files = await imageKit.listFiles({
+//   tags: fileHash,
+//   limit: 1, // 只需要一个文件
+// })
+
+// return files.length > 0 ? files[0] : null
