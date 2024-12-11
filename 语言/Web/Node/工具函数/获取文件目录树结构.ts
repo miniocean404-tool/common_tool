@@ -4,6 +4,8 @@ import { readdirSync, statSync, Stats } from "fs"
 import path, { resolve } from "path"
 let levInfos: LevInfo[] = []
 
+type fileType = "folder" | "file"
+
 export interface LevInfo {
   level: number // 层级
   ancestor: string // 祖先路径
@@ -15,6 +17,8 @@ export class File {
   private ancestor!: string
   private pathName!: string
   private level!: number
+  private type: fileType = "file"
+
   constructor(ancestor: string, pathName: string, level: number) {
     this.ancestor = ancestor
     this.pathName = pathName
@@ -29,6 +33,9 @@ export class File {
   getLevel() {
     return this.level
   }
+  getType() {
+    return this.type
+  }
 }
 
 export class Folder {
@@ -36,6 +43,7 @@ export class Folder {
   private pathName: string
   private level: number
   private children: (Folder | File)[]
+  private type: fileType = "folder"
 
   constructor(ancestor: string = "", pathName: string = "", level: number = 0, children: (Folder | File)[] = []) {
     this.ancestor = ancestor
@@ -51,6 +59,9 @@ export class Folder {
   }
   getLevel() {
     return this.level
+  }
+  getType() {
+    return this.type
   }
   getChildren() {
     return this.children
@@ -85,7 +96,7 @@ export function traverseFolder(
   files.forEach((item: string) => {
     const curLevel = level + 1
     const fileStat: Stats = statSync(resolve(acPath, item))
-    const isDirectory: boolean = fileStat.isDirectory()
+    const isDirectory = fileStat.isDirectory()
 
     if (isDirectory) {
       const childFolder: Folder = new Folder(acPath, item, curLevel)
@@ -107,12 +118,13 @@ export function traverseFolder(
  */
 export function traverse(
   folder: Folder,
-  callback: (ancestor: string, pathName: string, level: number) => void = function () {},
+  callback: (ancestor: string, pathName: string, level: number, type: fileType) => void = function () {},
   lasStatus: number[] = [],
 ) {
   const ancestor = folder.getAncestor(),
     pathName = folder.getPathName(),
-    level = folder.getLevel()
+    level = folder.getLevel(),
+    type = folder.getType()
 
   if (folder.getLevel() === 0) {
     lasStatus = [0]
@@ -125,7 +137,7 @@ export function traverse(
       },
     ]
   }
-  callback(ancestor, pathName, level)
+  callback(ancestor, pathName, level, type)
 
   const files: Array<File | Folder> = folder.getChildren()
 
@@ -143,9 +155,9 @@ export function traverse(
     })
 
     if (item instanceof Folder) {
-      traverse(<Folder>item, callback, lasStatus)
+      traverse(item, callback, lasStatus)
     } else {
-      callback(item.getAncestor(), item.getPathName(), curLevel)
+      callback(item.getAncestor(), item.getPathName(), curLevel, item.getType())
     }
   })
 
@@ -156,6 +168,6 @@ export function traverse(
 
 const res = traverseFolder(path.join(process.cwd()), "src")
 
-traverse(res, (ancestor, filepath, level) => {
-  console.log(ancestor, filepath, level)
+traverse(res, (ancestor, pathName, level, type) => {
+  console.log(ancestor, pathName, level, type)
 })
