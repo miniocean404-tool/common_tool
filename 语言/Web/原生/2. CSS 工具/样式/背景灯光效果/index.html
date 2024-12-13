@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vite 背景灯光效果</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+        }
+
+        #box {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #bg {
+            position: absolute;
+
+            top: -30%;
+            left: 0;
+            right: 0;
+            bottom: -60%;
+
+            width: 100%;
+            z-index: 0;
+            opacity: 0.4;
+            transition: opacity 1s ease;
+
+            background: url("./noise.png"),
+                radial-gradient(circle at right center, #563277, #4a378c 30%, #4172c2 55%, #32517380);
+            mask-image: radial-gradient(ellipse 300% 30% at center center, #000 20%, #00000080 50%, #0000);
+        }
+
+        .mask {
+            pointer-events: none;
+            position: absolute;
+            z-index: 10;
+        }
+
+        .left {
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 30%;
+            background-image: linear-gradient(to right, #000 0, transparent 100%);
+        }
+
+        .right {
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 30%;
+            background-image: linear-gradient(to left, #000 0, transparent 100%);
+        }
+
+        .top {
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 30%;
+            background-image: linear-gradient(to bottom, #000 0, transparent 100%);
+        }
+
+        .bottom {
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 30%;
+            background-image: linear-gradient(to top, #000 0, transparent 100%);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <div id="bg"></div>
+
+        <div class="mask left"></div>
+        <div class="mask right"></div>
+        <div class="mask top"></div>
+        <div class="mask bottom"></div>
+    </div>
+
+    <script>
+        const bg = document.getElementById('bg');
+        bg.onclick = () => {
+            bg.style.opacity = '1';
+        }
+    </script>
+</body>
+
+</html>
