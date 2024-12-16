@@ -113,7 +113,7 @@ export const fpsLimiter = () => {
    */
   const raf = async (cb: ICallBack) => {
     const expFps = 60
-    return autoSysFps.then((sysFps: any) => {
+    return calculateAverageFps().then((sysFps: any) => {
       if (sysFps > expFps) {
         return startExpectFps(cb, expFps)
       } else {
