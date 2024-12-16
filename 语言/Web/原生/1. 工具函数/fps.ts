@@ -81,7 +81,7 @@ export const fpsLimiter = () => {
   }
 
   /**
-   * 已系统的帧率执行回调
+   * 以系统的帧率执行回调
    * @param cb
    * @returns
    */
