@@ -1,0 +1,9 @@
+.ios-safe-area {
+  /* 可以通过增加 padding-bottom 来适配 */
+  padding-bottom: constant(safe-area-inset-bottom); /*兼容 IOS < 11.2*/
+  padding-bottom: env(safe-area-inset-bottom); /* 兼容 IOS > 11.2*/
+
+  /* 或者改变高度*/
+  height: calc(55px + constant(safe-area-inset-bottom));
+  height: calc(55px + env(safe-area-inset-bottom));
+}
