@@ -5,6 +5,9 @@ export type ICallBack = (currentFps?: number) => void
  * 计算 n 秒内的平均帧率
  * @param n
  * @returns
+ * @example
+ * 调用函数，例如计算 5 秒的平均 FPS:
+ * calculateAverageFps(5)
  */
 export const calculateAverageFps = (n = 5) => {
   let _res: (value: any) => void
@@ -26,9 +29,6 @@ export const calculateAverageFps = (n = 5) => {
   requestAnimationFrame(rafLoop)
   return p
 }
-
-// 调用函数，例如计算 5 秒的平均 FPS
-export const autoSysFps = calculateAverageFps(5)
 
 /**
  * 帧率限制
