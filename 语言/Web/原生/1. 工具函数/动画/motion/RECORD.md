@@ -6,3 +6,4 @@
 
 1. transform: motion/utils/index.ts
 2. spring: motion/animation/generators/spring/index.ts
+3. mix: motion/utils/mix/index.ts
