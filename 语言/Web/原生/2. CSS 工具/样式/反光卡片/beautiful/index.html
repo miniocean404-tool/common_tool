@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 源文章：https://juejin.cn/post/7326461075447201843?searchId=202412202154557C4754C6E77E5636D136 -->
+    <!-- 实际效果地址：https://key-drop.com/en/#holo-cases -->
+
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            background: #000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            transform-style: preserve-3d;
+            perspective: 800px;
+            cursor: pointer;
+            aspect-ratio: 270 / 375;
+            width: 237px;
+            height: auto;
+
+            --foregroundColor: rgb(255, 200, 255);
+            --backgroundColor: rgb(50, 161, 161);
+
+
+            .box {
+                clip-path: inset(0px round 6px);
+                width: 100%;
+                height: 100%;
+                transform-style: preserve-3d;
+
+                display: grid;
+                grid-template: "area" / minmax(0, 1fr);
+            }
+
+            .bg {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                grid-area: area;
+            }
+
+            .overlayer {
+                width: 100%;
+                mix-blend-mode: color-burn;
+                grid-area: area;
+                object-fit: cover;
+                opacity: 0.5;
+            }
+
+            .overlayer2 {
+                width: 100%;
+                mix-blend-mode: color-dodge;
+                grid-area: area;
+                opacity: 0.5;
+                object-fit: cover;
+            }
+
+            .people {
+                grid-area: area;
+                object-fit: contain;
+                align-self: flex-end;
+                justify-self: center;
+
+                transform: translateY(13.5px) scale(1.05);
+                height: 90%;
+            }
+
+            .light1,
+            .light3 {
+                mix-blend-mode: difference;
+                grid-area: area;
+                opacity: 0;
+                background-image: radial-gradient(farthest-corner circle at 50% 50%,
+                        var(--backgroundColor) 5%,
+                        transparent 60%);
+            }
+
+            .light3 {
+                mix-blend-mode: plus-lighter;
+            }
+
+            .light2,
+            .light4 {
+                mix-blend-mode: color-burn;
+                grid-area: area;
+                opacity: 0;
+                background-image: radial-gradient(farthest-corner circle at 50% 50%,
+                        var(--foregroundColor) 5%,
+                        transparent 60%);
+            }
+
+            .light4 {
+                mix-blend-mode: overlay;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box">
+            <img class="bg" src="./bg.png" alt="">
+            <img class="overlayer" src="./overlayer.png" alt="">
+
+
+            <div class="light1"></div>
+            <div class="light2"></div>
+            <div class="light3"></div>
+
+
+            <img class="people" src="./people.png" alt="">
+            <img class="overlayer2" src="./overlayer.png" alt="">
+            <div class="light4"></div>
+        </div>
+    </div>
+
+
+    <script>
+        const multiple = 10;
+
+        const mouseOverContainer = document.querySelector(".container");
+        const element = document.querySelector(".box");
+        const img = document.querySelector(".people");
+
+        const light1 = document.querySelector(".light1");
+        const light2 = document.querySelector(".light2");
+        const light3 = document.querySelector(".light3");
+        const light4 = document.querySelector(".light4");
+
+        mouseOverContainer.addEventListener("mousemove", (e) => {
+            window.requestAnimationFrame(() => {
+                transformElement(e.offsetX, e.offsetY);
+            });
+        });
+
+        mouseOverContainer.addEventListener("mouseleave", (e) => {
+            window.requestAnimationFrame(() => {
+                element.style.transform = "rotateX(0) rotateY(0)";
+                light1.style.opacity = "";
+                light2.style.opacity = "";
+                light3.style.opacity = "";
+                light4.style.opacity = "";
+
+                light1.style.backgroundImage = ""
+                light2.style.backgroundImage = ""
+                light3.style.backgroundImage = ""
+                light4.style.backgroundImage = ""
+            });
+        });
+
+        function transformElement(x, y) {
+            let box = element.getBoundingClientRect();
+
+            const calcX = (y - box.height / 2) / multiple;
+            const calcY = -(x - box.width / 2) / multiple;
+            const xPercentage = parseInt(x / box.width * 1000) / 10;
+            const yPercentage = parseInt(y / box.width * 1000) / 10;
+
+            element.style.transform = "scale(1.02) rotateX(" + calcX + "deg) " + "rotateY(" + calcY + "deg)";
+
+            light1.style.opacity = "1";
+            light1.style.backgroundImage = `radial-gradient(farthest-corner circle at ${xPercentage}% ${yPercentage}%, var(--backgroundColor) 5%, transparent 60%)`;
+
+
+            light2.style.opacity = "0.1";
+            light2.style.backgroundImage = `radial-gradient(farthest-corner circle at ${xPercentage}% ${yPercentage}%, var(--foregroundColor) 5%, transparent 60%)`;
+
+
+            light3.style.opacity = "0.5";
+            light3.style.backgroundImage = `radial-gradient(farthest-corner circle at ${xPercentage}% ${yPercentage}%, var(--backgroundColor) 5%, transparent 60%)`;
+
+            light4.style.opacity = "0.6";
+            light4.style.backgroundImage = `radial-gradient(farthest-corner circle at ${xPercentage}% ${yPercentage}%, var(--foregroundColor) 5%, transparent 60%)`;
+        }
+
+    </script>
+</body>
+
+</html>
