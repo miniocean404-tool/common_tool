@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display:none Transition 动画(有兼容性问题)</title>
+
+    <!-- https://www.zhangxinxu.com/wordpress/2024/06/css-transition-behavior/ -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .box {
+            background: red;
+            padding: 12px;
+            border-radius: 8px;
+            /* transition-behavior: allow-discrete; */
+            transition: 1s allow-discrete;
+        }
+
+        .box[hidden] {
+            opacity: 0;
+        }
+
+        .box:not([hidden]) {
+            opacity: 1;
+
+            /* transition 绝对不能使用 transition-property */
+            @starting-style {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="btn" id="btn">按钮</button>
+
+    <div class="container">
+        <div class="box" id="box">您确定提交数据吗？</div>
+
+        <script>
+            const btn = document.getElementById('btn')
+            const box = document.getElementById('box')
+
+            let show = false
+            btn.onclick = function () {
+                if (show) {
+                    box.hidden = false
+                } else {
+                    box.hidden = true
+                }
+                show = !show;
+            }
+        </script>
+    </div>
+</body>
+
+</html>

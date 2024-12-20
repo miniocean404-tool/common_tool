@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display:none Transition 动画（只能用于 none -> block)</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 50vw;
+            height: 50vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            background: red;
+            padding: 12px;
+            border-radius: 8px;
+            transition: opacity 1s;
+            display: none;
+            opacity: 0;
+        }
+
+
+        .block {
+            display: block;
+        }
+
+        .active {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="btn" id="btn">按钮</button>
+
+    <div class="container">
+        <div class="box" id="box">您确定提交数据吗？</div>
+
+        <script>
+            const btn = document.getElementById('btn')
+            const box = document.getElementById('box')
+
+            let show = true
+            btn.onclick = function () {
+                if (show) {
+                    active()
+                } else {
+                    inactive()
+                }
+
+                show = !show;
+            }
+
+            function inactive() {
+                box.classList.remove('block')
+                box.classList.remove('active')
+            }
+
+            function active() {
+                box.classList.add('block')
+                // 只能是展示
+                // 最关键的是这一步，可以保证元素先渲染到页面，再执行 opacity：1，
+                // 除此之外还有 offsetWidth、scrollHeight 均有相同的效果
+                box.clientHeight
+                box.classList.add('active')
+            }
+        </script>
+    </div>
+</body>
+
+</html>

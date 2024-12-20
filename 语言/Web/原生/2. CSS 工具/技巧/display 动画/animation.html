@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display:none Transition 动画</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 50vw;
+            height: 50vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            background: red;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .active {
+            animation: fade 1s ease-in-out 1 both;
+        }
+
+        .inactive {
+            animation: fade2 1s ease-in-out 1 both;
+        }
+
+        /* 移出动画 */
+        @keyframes fade {
+            0% {
+                opacity: 0;
+                transform: translateY(0);
+                display: none;
+            }
+
+            1% {
+                opacity: 0;
+                transform: translateY(0);
+                display: block;
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(100px);
+                display: block;
+            }
+        }
+
+        @keyframes fade2 {
+            from {
+                opacity: 1;
+                transform: translateY(100px);
+                display: block;
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(0);
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="btn" id="btn">按钮</button>
+
+    <div class="container">
+        <div class="box" id="box">您确定提交数据吗？</div>
+
+        <script>
+            const btn = document.getElementById('btn')
+            const box = document.getElementById('box')
+
+            let show = false
+            btn.onclick = function () {
+                if (show) {
+                    box.classList.remove('inactive')
+                    box.classList.add('active')
+                } else {
+                    box.classList.add('inactive')
+                    box.classList.remove('active')
+                }
+                show = !show;
+            }
+        </script>
+    </div>
+</body>
+
+</html>
