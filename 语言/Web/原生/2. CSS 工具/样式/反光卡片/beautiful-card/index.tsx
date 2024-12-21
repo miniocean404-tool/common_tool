@@ -1,5 +1,8 @@
 "use client"
 
+// 源效果地址：https://key-drop.com/en/#limited-edition
+// 文章地址：https://juejin.cn/post/7326461075447201843
+
 import React, { useState } from "react"
 import Image, { type StaticImageData } from "next/image"
 
@@ -60,7 +63,7 @@ const cards = [
 
 export function RenderCard() {
   return (
-    <div className="layout">
+    <div className='layout'>
       {cards.map((card, index) => {
         return (
           <BeatifulCard
@@ -148,14 +151,14 @@ export default function BeatifulCard(props: BeatifulCardProps) {
 
   return (
     <div
-      className="container"
+      className='container'
       style={{
         "--foregroundColor": props.foregroundColor,
         "--backgroundColor": props.backgroundColor,
       }}
     >
       <motion.div
-        className="card"
+        className='card'
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 1.05 }}
         transition={{ type: "spring", bounce: 0.5 }}
@@ -171,45 +174,45 @@ export default function BeatifulCard(props: BeatifulCardProps) {
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
       >
-        <Image className="bg" src={props.background} width={237} height={330} alt="" />
-        <Image className="overlayer" src={overlayer} width={237} height={330} alt="" />
+        <Image className='bg' src={props.background} width={237} height={330} alt='' />
+        <Image className='overlayer' src={overlayer} width={237} height={330} alt='' />
 
         <motion.div
-          className="light1"
+          className='light1'
           animate={{ opacity: isHover ? 1 : 0 }}
           transition={{ damping: 20 }}
           style={{ backgroundImage: percentageTransform_1_3 }}
         ></motion.div>
 
         <motion.div
-          className="light2"
+          className='light2'
           animate={{ opacity: isHover ? 0.1 : 0 }}
           transition={{ damping: 20 }}
           style={{ backgroundImage: percentageTransform_2_4 }}
         ></motion.div>
 
         <motion.div
-          className="light3"
+          className='light3'
           animate={{ opacity: isHover ? 0.5 : 0 }}
           transition={{ damping: 20 }}
           style={{ backgroundImage: percentageTransform_1_3 }}
         ></motion.div>
 
         <motion.div
-          className="people"
+          className='people'
           whileTap={{ scale: 1 }}
           transition={{ type: "spring", bounce: 0.57 }}
           style={{ scale: 1.05, y: 13.5, rotateX: peopleXSpring, rotateY: peopleYSpring }}
         >
-          <Image src={props.people} width={301} height={301} alt="" />
+          <Image src={props.people} width={301} height={301} alt='' />
         </motion.div>
 
-        <motion.div className="overlayer2" style={{ opacity: isTap ? 1 : 0.5 }}>
-          <Image src={overlayer} width={237} height={330} alt="" />
+        <motion.div className='overlayer2' style={{ opacity: isTap ? 1 : 0.5 }}>
+          <Image src={overlayer} width={237} height={330} alt='' />
         </motion.div>
 
         <motion.div
-          className="light4"
+          className='light4'
           animate={{ opacity: isHover ? 0.6 : 0 }}
           transition={{ damping: 20 }}
           style={{ backgroundImage: percentageTransform_2_4 }}
