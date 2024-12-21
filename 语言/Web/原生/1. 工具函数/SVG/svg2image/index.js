@@ -28,6 +28,16 @@ function svgRender2Image({ src, crossOrigin }) {
   })
 }
 
+// 下载图片
+function downloadImage(filename, url) {
+  const image = new Image()
+  image.src = url
+  image.onload = function () {
+    const base64 = image2CanvasPngBase64(image, 1)
+    download(filename, base64)
+  }
+}
+
 // 将图片放大后转为 canvas base64 图片
 function image2CanvasPngBase64(image, scale = 1) {
   scale = window.devicePixelRatio * scale
@@ -43,6 +53,13 @@ function image2CanvasPngBase64(image, scale = 1) {
   return canvas.toDataURL("image/png")
 }
 
+function download(filename, url) {
+  const a = document.createElement("a")
+  a.href = url
+  a.download = `${filename}.png`
+  a.click()
+}
+
 // 只适合设置了跨域或本地图片
 export const getURLImageBase64 = (src, cb) => {
   return new Promise((resolve, reject) => {
@@ -55,11 +72,4 @@ export const getURLImageBase64 = (src, cb) => {
       resolve(base64)
     }
   })
-}
-
-function download(filename, url) {
-  const a = document.createElement("a")
-  a.href = url
-  a.download = `${filename}.png`
-  a.click()
 }

@@ -1,0 +1,81 @@
+.layout {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1.5rem;
+
+  /* default: grid-template-columns: repeat(4, minmax(0, 1fr)); */
+  /* md: grid-template-columns: repeat(6, minmax(0, 1fr)); */
+  /* lg: grid-template-columns: repeat(8, minmax(0, 1fr)); */
+  /* xl: grid-template-columns: repeat(12, minmax(0, 1fr)); */
+}
+
+.container {
+  grid-column: span 2 / span 2;
+  perspective: 800px;
+  cursor: pointer;
+  aspect-ratio: 270 / 375;
+  width: 237px;
+
+  .card {
+    display: grid;
+    grid-template: "area" / minmax(0, 1fr);
+  }
+
+  .bg {
+    object-fit: cover;
+    pointer-events: none;
+    grid-area: area;
+    height: 334px;
+  }
+
+  .overlayer,
+  .overlayer2 {
+    grid-area: area;
+    pointer-events: none;
+    object-fit: cover;
+    opacity: 0.5;
+  }
+
+  .overlayer {
+    mix-blend-mode: color-burn;
+  }
+
+  .overlayer2 {
+    mix-blend-mode: color-dodge;
+  }
+
+  .people {
+    width: max-content;
+    max-width: unset;
+    grid-area: area;
+    object-fit: contain;
+    align-self: flex-end;
+    justify-self: center;
+
+    height: 90%;
+  }
+
+  .light1,
+  .light2,
+  .light3,
+  .light4 {
+    grid-area: area;
+    pointer-events: none;
+  }
+
+  .light1 {
+    mix-blend-mode: difference;
+  }
+
+  .light2 {
+    mix-blend-mode: color-burn;
+  }
+
+  .light3 {
+    mix-blend-mode: plus-lighter;
+  }
+
+  .light4 {
+    mix-blend-mode: overlay;
+  }
+}
